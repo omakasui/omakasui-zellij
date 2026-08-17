@@ -1,0 +1,31 @@
+Source: omakasui-zellij
+Section: utils
+Priority: optional
+Maintainer: Luca Pattocchio <info@lucapattocchio.dev>
+Standards-Version: 4.7.2
+Build-Depends: debhelper-compat (= 13)
+Rules-Requires-Root: no
+Homepage: https://github.com/omakasui/omakasui-zellij
+
+Package: omakasui-zellij
+Architecture: all
+Multi-Arch: foreign
+Depends: ${misc:Depends}, zellij, gum
+Description: Zellij configuration (shared payload)
+ Installs the omakub-based zellij configuration to /usr/share/omakasui-zellij,
+ plus the shared setup script. Install omakub-zellij or omadeb-zellij to get
+ the project-specific setup command.
+
+Package: omakub-zellij
+Architecture: all
+Depends: ${misc:Depends}, omakasui-zellij (= ${binary:Version})
+Description: Zellij configuration for Omabuntu/Omakub
+ Provides the omakub-setup-zellij command, which activates the shared
+ omakasui-zellij configuration for the current user.
+
+Package: omadeb-zellij
+Architecture: all
+Depends: ${misc:Depends}, omakasui-zellij (= ${binary:Version})
+Description: Zellij configuration for Omadeb
+ Provides the omadeb-setup-zellij command, which activates the shared
+ omakasui-zellij configuration for the current user.

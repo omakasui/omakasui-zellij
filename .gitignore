@@ -1,0 +1,11 @@
+/debian/.debhelper/
+/debian/omakasui-zellij/
+/debian/omakub-zellij/
+/debian/omadeb-zellij/
+/debian/*.debhelper.log
+/debian/*.substvars
+/debian/files
+/debian/debhelper-build-stamp
+/*.deb
+/*.buildinfo
+/*.changes
