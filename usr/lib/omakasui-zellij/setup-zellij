@@ -2,10 +2,45 @@
 # Installs the omakub-based zellij configuration for the current user,
 # symlinks the active project theme into ~/.config/zellij/themes/current.kdl,
 # and sets zellij as the shell in alacritty.toml if alacritty is present.
+# Pass -y to skip the prompt and --no-backup to drop the existing config.
 
 set -euo pipefail
 
 PROJECT="${OMAKASUI_PROJECT:-$(basename -- "$0" | cut -d- -f1)}"
+
+ASSUME_YES=false
+DO_BACKUP=true
+
+usage() {
+  cat <<EOF
+Usage: $(basename -- "$0") [-y|--yes] [--no-backup]
+
+  -y, --yes        Skip the confirmation prompt
+      --no-backup  Overwrite the existing config instead of backing it up
+  -h, --help       Show this help
+EOF
+}
+
+while (( $# > 0 )); do
+  case "$1" in
+  -y | --yes)
+    ASSUME_YES=true
+    ;;
+  --no-backup)
+    DO_BACKUP=false
+    ;;
+  -h | --help)
+    usage
+    exit 0
+    ;;
+  *)
+    echo "Unknown option: $1" >&2
+    usage >&2
+    exit 2
+    ;;
+  esac
+  shift
+done
 
 PACKAGE_DIR="/usr/share/omakasui-zellij"
 CONFIG_FILE="${HOME}/.config/zellij/config.kdl"
@@ -20,13 +55,23 @@ fi
 
 #  Install zellij config, backing up existing config if present
 if [[ -f "$CONFIG_FILE" ]]; then
-  if gum confirm "$(echo -e "Zellij config already exists at $CONFIG_FILE.\nThis will create a backup and overwrite it. Continue?")"; then
+  if [[ $DO_BACKUP == true ]]; then
+    PROMPT="Zellij config already exists at $CONFIG_FILE.\nThis will create a backup and overwrite it. Continue?"
+  else
+    PROMPT="Zellij config already exists at $CONFIG_FILE.\nIt will be overwritten without a backup. Continue?"
+  fi
+
+  if [[ $ASSUME_YES != true ]] && ! gum confirm "$(echo -e "$PROMPT")"; then
+    echo "Setup cancelled."
+    exit 0
+  fi
+
+  if [[ $DO_BACKUP == true ]]; then
     BACKUP="${CONFIG_FILE}.backup.$(date +%Y%m%d-%H%M%S)"
     echo "Backing up existing config to $BACKUP"
     cp "$CONFIG_FILE" "$BACKUP"
   else
-    echo "Setup cancelled."
-    exit 0
+    echo "Overwriting existing config at $CONFIG_FILE (no backup)"
   fi
 fi
 
