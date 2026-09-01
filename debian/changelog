@@ -1,3 +1,10 @@
+omakasui-zellij (1:0.0.2) unstable; urgency=medium
+
+  * Add -y/--yes to skip the confirmation and --no-backup to
+    overwrite the existing config without backing it up in setup-zellij.
+
+ -- Luca Pattocchio <info@lucapattocchio.dev>  Tue, 01 Sep 2026 00:00:00 +0200
+
 omakasui-zellij (1:0.0.1) unstable; urgency=medium
 
   * Initial commit
