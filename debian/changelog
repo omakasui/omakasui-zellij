@@ -1,3 +1,9 @@
+omakasui-zellij (1:0.0.3) unstable; urgency=medium
+
+  * Restored frames in the panes and removed superfluous overrides.
+
+ -- Luca Pattocchio <info@lucapattocchio.dev>  Tue, 22 Sep 2026 12:00:00 +0200
+
 omakasui-zellij (1:0.0.2) unstable; urgency=medium
 
   * Add -y/--yes to skip the confirmation and --no-backup to
